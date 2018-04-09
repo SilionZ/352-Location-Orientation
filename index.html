@@ -60,7 +60,7 @@ body {
         var latlong = position.coords.latitude + "," + position.coords.longitude;
         
         // Set Google map source url
-        var mapLink = "https://maps.googleapis.com/maps/api/map?center="+latlong+"&zoom=16&size=1000x800&output=embed";
+        var mapLink = "https://maps.googleapis.com/maps/api/staticmap?center="+latlong+"&zoom=16&size=1000x800&output=embed";
         
         // Create and insert Google map
         document.getElementById("embedMap").innerHTML = "<img alt='Map Holder' src='"+ mapLink +"'>";
