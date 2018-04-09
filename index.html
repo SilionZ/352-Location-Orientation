@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+	background-color: coral;
+	text-align: center;
+	color: white;
+}
+
+      #compass{
+        width:15%;
+        transform-origin: 50% 50%;
+        -webkit-transform-origin: 50% 50%;
+        -moz-transform-origin: 50% 50%;
+            display: block;
+    margin-left: auto;
+    margin-right: auto;    
+      }
+    </style>
+    <script>
+      function init() {
+        var compass = document.getElementById('compass');
+        if(window.DeviceOrientationEvent) {
+  
+          window.addEventListener('deviceorientation', function(event) {
+                var alpha;
+                //Check for iOS property
+                if(event.webkitCompassHeading) {
+                  alpha = event.webkitCompassHeading;
+                  //Rotation is reversed for iOS
+                  compass.style.WebkitTransform = 'rotate(-' + alpha + 'deg)';
+                }
+                //non iOS
+                else {
+                  alpha = event.alpha;
+                  webkitAlpha = alpha;
+                  if(!window.chrome) {
+                    //Assume Android stock (this is crude, but good enough for our example) and apply offset
+                    webkitAlpha = alpha-270;
+                  }
+                }
+ 
+                compass.style.Transform = 'rotate(' + alpha + 'deg)';
+                compass.style.WebkitTransform = 'rotate('+ webkitAlpha + 'deg)';
+                //Rotation is reversed for FF
+                compass.style.MozTransform = 'rotate(-' + alpha + 'deg)'; 
+              }, false);
+        }
+      }
+    </script>	
+
+<script type="text/javascript">
+    function showPosition(){
+        navigator.geolocation.getCurrentPosition(showMap);
+    }
+    
+    function showMap(position){
+        // Get location data
+        var latlong = position.coords.latitude + "," + position.coords.longitude;
+        
+        // Set Google map source url
+        var mapLink = "https://maps.googleapis.com/maps/api/staticmap?center="+latlong+"&zoom=16&size=1000x800&output=embed";
+        
+        // Create and insert Google map
+        document.getElementById("embedMap").innerHTML = "<img alt='Map Holder' src='"+ mapLink +"'>";
+    }
+</script>
+
+</head>
+
+<body onload="init()">
+
+<h1>Using your devices to move it</h1>
+
+    <div id="compassContainer">
+      <img src="compass.png" id="compass" class="center">
+    </div>
+
+<h1>Where am I?</h1>
+
+<body>
+    <button type="button" onclick="showPosition();">Show My Position on Google Map</button>
+    <div id="embedMap">
+        <!--Google map will be embedded here-->
+    </div>
+</body>
+
+</body>
+</html>
+
