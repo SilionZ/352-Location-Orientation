@@ -51,20 +51,34 @@ body {
     </script>	
 
 <script type="text/javascript">
-    function showPosition(){
-        navigator.geolocation.getCurrentPosition(showMap);
-    }
-    
-    function showMap(position){
-        // Get location data
-        var latlong = position.coords.latitude + "," + position.coords.longitude;
-        
-        // Set Google map source url
-        var mapLink = "https://maps.googleapis.com/maps/api/staticmap?center="+latlong+"&zoom=16&size=1000x800&&key=AIzaSyCCfgqusgBZikYgZbtS4b4bYqCbNQqZ8HUoutput=embed";
-        
-        // Create and insert Google map
-        document.getElementById("embedMap").innerHTML = "<img alt='Map Holder' src='"+ mapLink +"'>";
-    }
+function geoFindMe() {
+  var output = document.getElementById("out");
+
+  if (!navigator.geolocation){
+    output.innerHTML = "<p>Geolocation is not supported by your browser</p>";
+    return;
+  }
+
+  function success(position) {
+    var latitude  = position.coords.latitude;
+    var longitude = position.coords.longitude;
+
+    output.innerHTML = '<p>Latitude is ' + latitude + '° <br>Longitude is ' + longitude + '°</p>';
+
+    var img = new Image();
+    img.src = "https://maps.googleapis.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&zoom=13&size=300x300&sensor=false";
+
+    output.appendChild(img);
+  }
+
+  function error() {
+    output.innerHTML = "Unable to retrieve your location";
+  }
+
+  output.innerHTML = "<p>Locating…</p>";
+
+  navigator.geolocation.getCurrentPosition(success, error);
+}
 </script>
 
 </head>
@@ -80,12 +94,9 @@ body {
 <h1>Where am I?</h1>
 
 <body>
-    <button type="button" onclick="showPosition();">Show My Position on Google Map</button>
-    <div id="embedMap">
-        <!--Google map will be embedded here-->
-    </div>
+<p><button onclick="geoFindMe()">Show my location</button></p>
+<div id="out"></div>
 </body>
 
 </body>
 </html>
-
