@@ -80,7 +80,9 @@ function geoFindMe() {
   navigator.geolocation.getCurrentPosition(success, error);
 }
 </script>
-
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAzYpaZTyikgSkPSKmaRmvxRSsSpTiz9SE&callback=initMap">
+    </script>
 </head>
 
 <body onload="init()">
